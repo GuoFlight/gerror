@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/GuoFlight/gerror"
@@ -12,14 +13,14 @@ func PrintLog(err *gerror.Gerr) *gerror.Gerr {
 	return err
 }
 func DoSomething() *gerror.Gerr {
-	err := errors.New("错误") //模拟错误
+	err := errors.New("错误") // 模拟错误
 	if err != nil {
 		return gerror.NewErr(err.Error())
 	}
 	return nil
 }
 func main() {
-	//示例1
+	// 示例1
 	fmt.Println("示例1：")
 	err1 := gerror.NewErr("错误1")
 	if err1 != nil {
@@ -31,20 +32,27 @@ func main() {
 	}
 	fmt.Println()
 
-	//示例2
+	// 示例2
 	fmt.Println("示例2：")
 	err2 := gerror.NewErr("错误2", err1.TraceID)
 	fmt.Println(err2.TraceID)
 	fmt.Println()
 
-	//示例3
+	// 示例3
 	fmt.Println("示例3：")
 	err3 := PrintLog(gerror.NewErr("错误3", err2.TraceID))
 	fmt.Println(err3)
 	fmt.Println()
 
-	//示例4
+	// 示例4
 	fmt.Println("示例4：")
 	err4 := DoSomething()
 	fmt.Println(err4)
+	fmt.Println()
+
+	// 示例5
+	fmt.Println("示例5：")
+	ctx := context.WithValue(context.Background(), "traceId", "abcdefghijklmn")
+	gerr := gerror.NewErrWithCtx(ctx, "错误5")
+	fmt.Println(gerr.TraceID)
 }
