@@ -1,4 +1,4 @@
-module github.com/GuoFlight/gerror
+module github.com/GuoFlight/gerror/v2
 
 go 1.18
 
